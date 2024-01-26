@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="bg-light-subtle">
+    <div class="container" style="box-sizing: border-box">
+      <div class="bg-primary">
+        <h1 class="title text-center text-white py-3">Expense Tracker</h1>
+      </div>
+
+      <div class="row row-cols-1 gy-3 container mt-3">
+        <div class="col">
+          <div class="row gx-4 d-flex justify-content-between">
+            <div class="shadow-sm p-3 bg-body rounded col-6">
+              <h3 class="title">Add Expense</h3>
+              <form>
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amount" />
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" />
+                <div class="input-group my-3">
+                  <label class="input-group-text" for="category"
+                    >Category</label
+                  >
+                  <select class="form-select" id="category">
+                    <option selected disabled>Choose...</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="movie">Movie</option>
+                    <option value="travel">Travel</option>
+                    <option value="food">Food</option>
+                  </select>
+                </div>
+
+                <button class="btn btn-primary w-100" id="add-expense-btn">
+                  Add Expense
+                </button>
+              </form>
+            </div>
+
+            <div class="shadow-sm p-3 bg-body rounded col-5">
+              <h1 class="title opacity-75">Total Expense</h1>
+
+              <p class="fs-2 fw-bold" id="total-expense">Rs.325.00</p>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-sm p-3 bg-body rounded col">
+          <div class="d-flex justify-content-between align-content-center">
+            <h3 class="title">Expense List</h3>
+            <div style="width: 200px" class="input-group my-3 flex-grow-0">
+              <label class="input-group-text" for="category">sort by</label>
+              <select class="form-select" id="category">
+                <option value="all" selected>All</option>
+                <option value="shopping">Shopping</option>
+                <option value="movie">Movie</option>
+                <option value="travel">Travel</option>
+                <option value="food">Food</option>
+              </select>
+            </div>
+          </div>
+          <ul class="list-group row" id="expenses-list">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center gap-3 border-bottom"
+            >
+              <span class="col">shopping</span>
+              <span class="col">Rs. 500</span>
+              <div class="btn-group">
+                <button class="btn btn-primary col w-50">Delete</button>
+                <button class="btn btn-success col">Edit</button>
+              </div>
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center gap-3 border-bottom"
+            >
+              <span class="col">shopping</span>
+              <span class="col">Rs. 500</span>
+              <div class="btn-group">
+                <button class="btn btn-primary col w-50">Delete</button>
+                <button class="btn btn-success col">Edit</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
