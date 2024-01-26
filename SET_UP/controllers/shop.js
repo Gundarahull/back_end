@@ -1,46 +1,42 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
 
+//in the products session reteriving the data
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fielddata]) => {
-      console.log(rows);
+  Product.findAll()
+    .then(products => {
       res.render('shop/product-list', {
-        prods: rows,
+        prods: products,
         pageTitle: 'All Products',
         path: '/products'
-      });
-    }).catch(err=>{
-      console.log(err);
+      })
     })
-};
+}
 
+//get the product when hit by the details
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId).then(([product]) => {
-    console.log(product,"findbyid");
-    res.render('shop/product-detail', {
-      product: product[0],
-      pageTitle: product.title,
-      path: '/products'
-    }); 
-  });
+  Product.findAll({ where: {id:prodId } })
+    .then((product) => {        //prosuct gives an array 
+      console.log(product, "findbyid");
+      res.render('shop/product-detail', {
+        product: product[0],
+        pageTitle: product[0].title,
+        path: '/products'
+      });
+    });
 };
 
+//retriving the data from the database to the shop
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fielddata]) => {
-      console.log(rows);
-      // console.log(fielddata); remaining inbuilt
+  Product.findAll()
+    .then(products => {
+      console.log(products, "GETINDEX");
       res.render('shop/index', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Shop',
         path: '/'
       })
-      // .catch(err=>{
-      //   console.log(err);
-      // })
-
     });
 };
 

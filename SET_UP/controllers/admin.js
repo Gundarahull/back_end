@@ -8,75 +8,99 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
+//adding the data into the database
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(null, title, imageUrl, description, price);
-  //  wgy we we are using class
-  product.save()
-    .then((result) => {
-      console.log(result, "SAVE");
-      res.redirect('/');
-    }).catch((err) => {
+  req.user
+    .createProduct({  //req use from the app.js there are assigned to 1
+      title: title, //without assigning the userid but its showing 1
+      price: price,
+      imageURL: imageUrl,
+      description: description,
+    }).then((result => {
+      console.log("succesfully ADDED THE PRODUCT in postaddproduct");
+      res.redirect('/admin/products');
+    })).catch((err) => {
       console.log(err);
     })
 
 };
 
+
+
+//editing the product
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findById(prodId, product => {
-    if (!product) {
-      return res.redirect('/');
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: editMode,
-      product: product
-    });
-  });
+  req.user
+    .getProducts({ where: { id: prodId } })
+    .then(products => {
+      const product = products[0]
+      if (!product) {
+        return res.redirect('/');
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        product: product
+      });
+    })
+    .catch(err => console.log(err));
 };
 
+//updating the product
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-  const updatedProduct = new Product(
-    prodId,
-    updatedTitle,
-    updatedImageUrl,
-    updatedDesc,
-    updatedPrice
-  );
-  updatedProduct.save();
+  Product.findByPk(prodId)
+    .then(product => {
+      product.title = updatedTitle,
+        product.price = updatedPrice,
+        product.imageURL = updatedImageUrl,
+        product.description = updatedDesc
+      return product.save()
+    }).then(result => {
+      console.log("updated CART");
+    })
   res.redirect('/admin/products');
 };
 
+//get admin-procuts
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fielddata]) => {
-      console.log(rows);
+  req.user
+    .getProducts()
+    .then(product => {
+      console.log(product, "IN ADMIN PRODUCT");
       res.render('admin/products', {
-        prods: rows,
+        prods: product,
         pageTitle: 'Admin Products',
         path: '/admin/products'
       });
-    });
+    })
+    .catch(err => {
+      console.log(err);
+    })
 };
 
+//deleting the product
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId).then(([product]) => {
-    console.log(product, "DELETEbyid");;
-    res.redirect('/admin/products');
-  })
+  Product.findByPk(prodId)
+    .then((product) => {
+      return product.destroy()
+    }).then(resut => {
+      console.log("deelted");
+      res.redirect('/admin/products');
+    })
 };
+
