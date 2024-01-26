@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOKING APPOINTMENY</title>
+</head>
+
+<body>
+    <h1>BOOKING APPOINTMENT </h1>
+    <form action="/booking" method="post" id="addForm" onsubmit="submitform(event)">
+        <div>
+            <label for="user">USER NAME</label><br>
+            <input type="text" id="user" name="user">
+        </div><br>
+        <div>
+            <label for="phone">Phone Number</label><br>
+            <input type="text" id="phone" name="phone">
+        </div><br>
+        <div>
+            <label for="mail">MAIL-ID</label><br>
+            <input type="text" id="mail" name="mail">
+        </div><br>
+
+        </div>
+            <input type="hidden" value="<%= product.id %>" name="productId">
+        </div>
+
+        <div>
+            <button type="submit">SUBMIT</button>
+        </div><br>
+
+        <ul id="items"></ul>
+    </form>
+    <script src="dom.js"></script>
+</body>
+
+</html>
