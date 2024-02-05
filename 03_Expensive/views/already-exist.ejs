@@ -11,6 +11,22 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
  
   <style>
+    nav {
+      background-color: #333; /* Set background color */
+      padding: 10px 0; /* Add padding */
+      text-align: center; /* Center-align the links */
+    }
+
+    nav a {
+      color: #fff; /* Set text color */
+      text-decoration: none; /* Remove underline from links */
+      padding: 10px 20px; /* Add padding to links */
+      margin: 0 10px; /* Add margin between links */
+    }
+
+    nav a:hover {
+      background-color: #555; /* Change background color on hover */
+    }
     body {
       background-color: #020e1b;
       font-family: Arial, sans-serif;
@@ -72,6 +88,9 @@
 </head>
 
 <body>
+  <nav>
+    <a href="/login">LOG-IN</a>
+  </nav>
   <div class="container">
     <div class="card shadow-lg bg-white rounded-lg w-96">
       <div class="card-header">

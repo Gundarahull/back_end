@@ -30,3 +30,59 @@ exports.postsignup=(req,res,next)=>{
     })     
 }
 
+exports.getlogin=(req,res,next)=>{
+    res.render('log-in')
+}
+
+exports.postlogin=(req,res,next)=>{
+    const userEmail=req.body.email
+    const password=req.body.password
+    SignUp.findOne({where:{email:userEmail}})
+    .then((user)=>{
+        if(user){
+            console.log(user.email);
+            if(user.password===password){
+                console.log("Comgrats");
+                res.redirect('/login');
+            }else{
+                res.render('password')   
+            };
+        }else{
+            res.render('no-email')
+        }
+    }).catch((err)=>{
+        console.log(err)
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// if(!user || !user.validPassword(password)){
+        //     req.flash('error','Invalid Email or Password')
+        //     return res.redirect('/login') 
+        // }
+        // req.session.userId=user.id;
+        // req.session.isLoggedIn=true;
+        // req.session.name=user.name;
+        // //console.log(req.session)
+        // res.locals.currentUser=req.session.name
+        // res.redirect("/")
