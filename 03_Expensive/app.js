@@ -4,6 +4,8 @@ const bodyparser=require('body-parser')
 const path=require('path')
 const flash = require('connect-flash');
 const session = require('express-session');
+//for encrypt the passwords so Cool
+const bcrypt = require('bcrypt');
 
 
 
