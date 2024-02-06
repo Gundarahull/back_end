@@ -43,12 +43,13 @@ exports.postlogin=(req,res,next)=>{
             console.log(user.email);
             if(user.password===password){
                 console.log("Comgrats");
-                res.redirect('/login');
+                res.render('../views/login/log-in-success')
+                
             }else{
-                res.render('password')   
+                res.render('../views/login/password') 
             };
         }else{
-            res.render('no-email')
+            res.render('../views/login/no-email')  
         }
     }).catch((err)=>{
         console.log(err)
