@@ -7,6 +7,9 @@ const session = require('express-session');
 //for encrypt the passwords so Cool
 const bcrypt = require('bcrypt');
 
+//cookies
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 
 const sequelize = require('./util/database')
@@ -24,8 +27,16 @@ app.use(flash());
 const signuproutes=require('./routes/signup-routes')
 app.use(signuproutes)
 //expensive routes
-const expenseroutes=require('./routes/expense-routes')
+const expenseroutes=require('./routes/expense-routes');
 app.use(expenseroutes)
+
+
+//RELATIONS (One-Many Relation)
+const SignUp = require('./model/singup-model');
+const Expensive = require('./model/expense-model');
+SignUp.hasMany(Expensive)
+Expensive.belongsTo(SignUp)
+
 
 sequelize.authenticate().then(()=>{
     console.log("CONNECTION DONE");

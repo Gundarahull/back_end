@@ -17,7 +17,9 @@ exports.postexpense=(req,res,next)=>{
 
 //retriving the info to the page
 exports.getpostexpense=(req,res,next)=>{
-    Expensive.findAll().then((expenses)=>{
+    console.log("USERID>>>>>IN GET EXPENSE",req.user.id);
+    //req.user just returning the row data of logged one
+    Expensive.findAll({where: { signupId : req.user.id}}).then((expenses)=>{
         console.log("EXPENSES ON FRONT_END");
         const viewdata={
             pagetitle:'Expenses-List',
