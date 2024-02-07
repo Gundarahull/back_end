@@ -48,6 +48,10 @@ exports.getlogin=(req,res,next)=>{
     res.render('log-in')
 }
 
+exports.getexpensivesubmit=(req,res,next)=>{
+    res.render('../views/Expensive/expensive.ejs')
+}
+
 exports.postlogin=(req,res,next)=>{
     const userEmail=req.body.email
     const password=req.body.password
@@ -61,7 +65,7 @@ exports.postlogin=(req,res,next)=>{
                 }
                 if(result){
                     console.log("Comgrats");
-                res.render('../views/login/log-in-success')
+                    res.redirect('/expensive')
                 }
                 else{
                 res.render('../views/login/password') 

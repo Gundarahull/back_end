@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pagetitle %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="bg-primary py-3">
+        <div class="container text-center">
+            <h1 class="text-light">EXPENSE TRACKER</h1>
+        </div>
+    </header>
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form action="/addexpense" method="post">
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" class="form-control" name="amount" id="amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" name="description" id="description">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select class="form-control" name="category" id="category">
+                            <option value="food">Food</option>
+                            <option value="petrol">Petrol</option>
+                            <option value="bills">Bills</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <% if(expenses.length){ %>
+        <div class="row mt-4">
+            <% for(let exp of expenses){ %>
+            <div class="col-md-6 mx-auto">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Amount: <%= exp.amount %></h5>
+                        <p class="card-text">Description: <%= exp.description %></p>
+                        <p class="card-text">Category: <%= exp.category %></p>
+                        <a href="/expense/edit/<%= exp.id %>" class="btn btn-sm btn-primary">Edit</a>
+                        <form action="/expense/delete" method="post" style="display: inline;">
+                            <input type="hidden" name="expenseid" value="<%= exp.id %>">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

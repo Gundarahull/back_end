@@ -20,9 +20,12 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(flash());
-
+//sinup routes
 const signuproutes=require('./routes/signup-routes')
 app.use(signuproutes)
+//expensive routes
+const expenseroutes=require('./routes/expense-routes')
+app.use(expenseroutes)
 
 sequelize.authenticate().then(()=>{
     console.log("CONNECTION DONE");
