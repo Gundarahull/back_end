@@ -5,7 +5,8 @@ exports.postexpense=(req,res,next)=>{
     const expenses={
         amount:req.body.amount,
         description:req.body.description,
-        category:req.body.category
+        category:req.body.category,
+        signupId: req.user.id  //taking userid from the token
     }
     Expensive.create(expenses).then((exp)=>{
         console.log("EXPENSES INSERTED SUCCESSFULLY");

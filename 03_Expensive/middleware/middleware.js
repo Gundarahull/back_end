@@ -16,6 +16,8 @@ exports.authenticate = (req, res, next) => {
     //nad its id
     console.log("USERID>>>>>",user.userId);
     //particular id>>Expenses
+
+    //finding the person who is login from the SIGNUP TABLE By using id
     SignUp.findByPk(user.userId).then((user)=>{ 
         //getting the ID through it
         req.user = user;  //important

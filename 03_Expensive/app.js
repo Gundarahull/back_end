@@ -1,5 +1,6 @@
 const express=require('express')
 const app=express()
+app.use(express.json());
 const bodyparser=require('body-parser')
 const path=require('path')
 const flash = require('connect-flash');
@@ -29,20 +30,28 @@ app.use(signuproutes)
 //expensive routes
 const expenseroutes=require('./routes/expense-routes');
 app.use(expenseroutes)
+//razorpay-routes
+const razorpayroutes=require('./routes/razorpay')
+app.use(razorpayroutes)
 
 
 //RELATIONS (One-Many Relation)
 const SignUp = require('./model/singup-model');
 const Expensive = require('./model/expense-model');
+const Order = require('./model/order-model');
 SignUp.hasMany(Expensive)
 Expensive.belongsTo(SignUp)
 
+//realation between user-orders
+Order.belongsTo(SignUp)
+SignUp.hasMany(Order)
 
 sequelize.authenticate().then(()=>{
     console.log("CONNECTION DONE");
 }).catch((err)=>{
     console.log(err);
 })
+
 
 sequelize.sync()
 .then((result)=>{

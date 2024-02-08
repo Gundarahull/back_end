@@ -6,7 +6,7 @@ const router=express.Router()
 
 
 router.get('/addexpense',authenticate,getpostexpense)
-router.post('/addexpense',postexpense)
+router.post('/addexpense',authenticate,postexpense)
 router.post('/expense/delete',deleteexpense)
 
 
