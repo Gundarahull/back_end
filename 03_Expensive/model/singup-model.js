@@ -24,6 +24,10 @@ const SignUp=sequelize.define('signup',{
     ispremium:{
         type:DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    totalexpense:{
+        type:DataTypes.INTEGER,
+        // allowNull:false
     }
 },{tableName:'signups'})
 

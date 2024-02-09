@@ -16,28 +16,20 @@ exports.leaderboard = (req, res) => {
     })
     .then(expenses => {
         console.log(">>>>>>>> Length", expenses.length);
-        
-        //totall adding the MONEY
-       
-        //using for of loop
-        // Calculate total amount for each user
-        // for (const item of expenses) {
-        //     const { username } = item.signup;
-        //     const { amount } = item;
         const totalAmountByUsername = {};
         expenses.forEach(item => {
             const username = item.signup.username;
             const amount = item.amount;
-            // If username doesn't exist in the object, initialize it with 0
             if (!totalAmountByUsername[username]) {
                 totalAmountByUsername[username] = 0;
             }
-            // Add the amount to the total for this user
+
             totalAmountByUsername[username] += amount;
         });
+        console.log("MAOUNT && USERNAME",totalAmountByUsername);
         const viewdata = {
             expenses,
-            totalAmountByUsername, // Pass the total amount by username to the view
+            totalAmountByUsername,
             pageTitle: "LEADERBOARD"
         };
     
@@ -49,7 +41,20 @@ exports.leaderboard = (req, res) => {
     });
 }
 
-    // Expensive.findAll({
+
+
+//totall adding the MONEY
+       
+        //using for of loop
+        // Calculate total amount for each user
+        // for (const item of expenses) {
+        //     const { username } = item.signup;
+        //     const { amount } = item;
+
+         // If username doesn't exist in the object, initialize it with 0
+     // Add the amount to the total for this user
+    
+         // Expensive.findAll({
     //     attributes: ['amount'],
     //     include:[{model:SignUp,
     //         attributes:['username']
