@@ -53,8 +53,9 @@ exports.isordercomplete = (req, res) => {
                     .catch((error) => {
                         console.error('Error updating isPremium:', error);
                     });
+            
                 console.log("Order Complete");
-                //    res.redirect('/addexpense')
+                    res.render('../views/premium/ur-premium')
             } else {
                 console.log("something WROMG");
 

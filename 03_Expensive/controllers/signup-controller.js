@@ -60,7 +60,12 @@ let token;
 exports.postlogin = (req, res, next) => {
     const userEmail = req.body.email
     const password = req.body.password
-    SignUp.findOne({ where: { email: userEmail } })
+    SignUp.findOne({
+        where:
+        {
+            email: userEmail
+        }
+    })
         .then((user) => {
             if (user) {
                 console.log(user.email);
@@ -73,24 +78,43 @@ exports.postlogin = (req, res, next) => {
                         //this id refers to user
                         console.log("userID>>>>", user.id);
                         //encrpt the id with token
-                         token = jwt.sign({
+                        token = jwt.sign({
                             userId: user.id
                         }, secretKey, {
                             expiresIn: '24h' // Token expires in 1 hour
                         });
                         console.log("token>>>>>", token)
                         // res.setHeader('Authorization', `Bearer ${token}`);
-                        res.cookie('token', token, { 
+                        res.cookie('token', token, {
                             maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 24 hours
                             httpOnly: true // Cookie is accessible only by the server
                         });
-                        res.redirect('/expensive') 
+
+                        // res.redirect('/expensive')
+
+                        //checking the user is premium or not
+                        SignUp.findOne({where:
+                            {ispremium:true,
+                                id:user.id
+                            }})
+                        .then((data)=>{
+                            if(data=== null){
+                                res.redirect('/expensive')    
+                            }
+                            else{
+                                res.render('../views/premium/ur-premium')
+                            }
+                            
+                        }).catch(()=>{
+                            console.log("not inyo the premium");
+                        })
                     }
                     else {
                         res.render('../views/login/password')
                     };
                 })
             } else {
+                
                 res.render('../views/login/no-email')
             }
         }).catch((err) => {
