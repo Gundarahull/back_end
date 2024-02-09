@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pagetitl %></title>
+    <title><%= pageTitle %></title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -58,17 +58,18 @@
                 <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>Amount</th>
+                    <th>Total Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <% if(expenses.length > 0) { %>
-                    <% expenses.forEach((item, index) => { %>
+                <% if(totalAmountByUsername) { %>
+                    <% Object.entries(totalAmountByUsername).forEach(([username, totalAmount], index) => { %>
                         <tr>
                             <td><%= index + 1 %></td>
-                            <td><%= item.signup.username %></td>
-                            <td><%= item.amount %></td>
+                            <td><%= username %></td>
+                            <td><%= totalAmount %></td>
                         </tr>
+                        
                     <% }); %>
                 <% } else { %>
                     <tr>
