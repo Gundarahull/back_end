@@ -7,7 +7,7 @@ const secretKey = 'yourSecretKeyHere';
 
 
 exports.authenticate = (req, res, next) => { 
-    console.log("hi");
+    console.log("IN MIDDLE WARE");
     const token = req.cookies.token;
     console.log('Token value:', token);
     //decrypt the code
@@ -21,7 +21,8 @@ exports.authenticate = (req, res, next) => {
     SignUp.findByPk(user.userId).then((user)=>{ 
         //getting the ID through it
         req.user = user;  //important
-        console.log(req.user);
+        console.log("INTO THE USER ID");
+        // console.log(req.user);
         next();
     }).catch(()=>{res.status(401).send({message: 'You are not authorized to perform this action'})});
 }

@@ -4,35 +4,14 @@ const SignUp = require("../model/singup-model");
 
 
 exports.leaderboard = (req, res) => {
-    Expensive.findAll({
-        attributes: ['amount'],
-        include: [{
-            model: SignUp,
-            attributes: ['username']
-        }],
-        order: [
-            ['amount', 'DESC']
-        ]
-    })
-    .then(expenses => {
-        console.log(">>>>>>>> Length", expenses.length);
-        const totalAmountByUsername = {};
-        expenses.forEach(item => {
-            const username = item.signup.username;
-            const amount = item.amount;
-            if (!totalAmountByUsername[username]) {
-                totalAmountByUsername[username] = 0;
-            }
-
-            totalAmountByUsername[username] += amount;
-        });
-        console.log("MAOUNT && USERNAME",totalAmountByUsername);
+    SignUp.findAll({
+        attributes:['username','totalexpense'],
+        order: [       ['totalexpense', 'DESC'] ]
+    }).then(expenses=>{
         const viewdata = {
             expenses,
-            totalAmountByUsername,
             pageTitle: "LEADERBOARD"
         };
-    
         res.render('../views/premium/leaderboard', viewdata);
     })
     .catch(error => {

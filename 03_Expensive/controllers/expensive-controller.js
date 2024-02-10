@@ -3,8 +3,6 @@ const SignUp = require("../model/singup-model");
 const sequelize = require("../util/database");
 
 //adding into the expenses table
-
-
 exports.postexpense = async (req, res, next) => {
     let t = null;
     try {
@@ -57,17 +55,25 @@ exports.deleteexpense = async (req, res, next) => {
     try {
         t = await sequelize.transaction();
         const expenseId = req.body.expenseid;
+        const totalData = await Expensive.findOne({
+            where: { id: expenseId },
+            attributes: ['amount']
+        });
+        const removeexpense = Number(req.user.totalexpense) - Number(totalData.amount)
         await Expensive.destroy({ where: { id: expenseId }, transaction: t });
-        await t.commit();
-        console.log("DELETED");
-        res.redirect('/addexpense');
-    } catch (err) {
-        console.log(err);
-        if (t) {
-            await t.rollback();
+
+        SignUp.update({ totalexpense: removeexpense }, { where: { id: req.user.id } })
+            .then(async (updatedata) => {
+                res.redirect('/addexpense');
+                await t.commit();
+            }).catch((error) =>console.log(error));
+
+        } catch (error) {
+        await t.rollback();
+        return next(error);
         }
-    }
-};
+}
+
 
 
 

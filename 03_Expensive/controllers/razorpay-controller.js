@@ -4,33 +4,35 @@ const Order = require('../model/order-model');
 const SignUp = require('../model/singup-model');
 
 const instance = new Razorpay({
-    key_id: 'rzp_test_NqkuUz0R6LWzm5',
-    key_secret: 'GCgkEPpR3FDkRGzkNWWKlgSD'
+    key_id:  'rzp_test_chl1HGz9KIP3i6',
+    key_secret: 'lYMHH8kXxFFEvuRzsbJRE29m'
 })
 
 
-exports.createorder = (req, res) => {
-    const options = {
-        amount: "6900",  // amount in the smallest currency unit
-        currency: "INR",
-        receipt: "EON'S"
-    };
-    instance.orders.create(options, (err, order) => {
-        if (err) {
-            return res.status(500).json({ error: err });
-        }
-        console.log(order);
-        res.json(order)
+exports.createorder = async (req, res) => {
+    try {
+        const options = {
+            amount: "6900",
+            currency: "INR",
+            receipt: "EON'S"
+        };
 
-    })
-}
+        const order = await instance.orders.create(options);
+        console.log(order);
+        res.json(order);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
 
 exports.isordercomplete = (req, res) => {
-    console.log("hi");
+    console.log("IN RAZOPRPAY CONTRol");
     instance.payments.fetch(req.body.razorpay_payment_id)
         .then(endpart => {
             console.log("$$$$$$$$ PAYMENT", endpart);
-            if (endpart.status === 'authorized') {
+            if (endpart.status === 'captured') {
                 const premium = {
                     orderid: endpart.order_id,
                     status: endpart.status,
@@ -81,10 +83,6 @@ exports.failedtrans = (req, res) => {
     }).catch(err => {
         console.log(err);
     })
-
-
-
-
     res.sendStatus(200); // Se
 
 }

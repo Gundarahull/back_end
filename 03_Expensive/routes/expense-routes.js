@@ -8,7 +8,7 @@ const router=express.Router()
 
 router.get('/addexpense',authenticate,getpostexpense)
 router.post('/addexpense',authenticate,postexpense)
-router.post('/expense/delete',deleteexpense)
+router.post('/expense/delete',authenticate,deleteexpense)
 
 router.get('/board',leaderboard)
 
