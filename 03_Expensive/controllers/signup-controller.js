@@ -104,7 +104,7 @@
 //                             else{
 //                                 res.render('../views/premium/ur-premium')
 //                             }
-                            
+
 //                         }).catch(()=>{
 //                             console.log("not inyo the premium");
 //                         })
@@ -114,7 +114,7 @@
 //                     };
 //                 })
 //             } else {
-                
+
 //                 res.render('../views/login/no-email')
 //             }
 //         }).catch((err) => {
@@ -130,12 +130,19 @@ const SignUp = require("../model/singup-model");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secretKey = 'yourSecretKeyHere';
+
 //package for the forget password
-const Sib=require('sib-api-v3-sdk')
-const client=Sib.ApiClient.instance
-const apiKey=client.authentications['api-key']
-apiKey.apiKey="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"
-const tranEmailApi = new Sib.TransactionalEmailsApi();
+const nodemailer = require('nodemailer');
+const Forget = require("../model/forgot-model");
+//sending mails
+const transporter = nodemailer.createTransport({
+    // Transport configuration
+    service: 'gmail',
+    auth: {
+        user: "shaikrahul731@gmail.com",
+        pass: "znfsrwkvzgtxpgqb"
+    }
+});
 
 exports.getsingup = (req, res, next) => {
     res.render('signup');
@@ -221,37 +228,167 @@ exports.getToken = () => {
 
 
 //forget password
-exports.forgetpassword=(req, res, next) =>{
+exports.forgetpassword = (req, res, next) => {
     res.render('../views/login/forgetpassword')
+}
+const { v4: uuidv4 } = require('uuid');
+const { where } = require("sequelize");
+const { _logFunc } = require("nodemailer/lib/shared");
+
+const count = []
+
+exports.resetpassword = (req, res, next) => {
+    console.log("into the password");
+    const userid = req.body.email
+    console.log(userid);
+    const uuid = uuidv4();
+
+    SignUp.findOne({ where: { email: userid } }).then((user) => {
+        if (!user) {
+            return res.json({ message: "Email not found" })
+        } else {
+            console.log("USER ID FOR FORGOT>>>", user.id);
+
+            count.push(user.id)
+            console.log("COUNT OF ARRAY------", count);
+            const countOfOnes = count.filter(num => num === user.id).length;
+            if (countOfOnes > 1) {
+                console.log("into the after the count");
+                Forget.update(
+                    { isactive: true, id: uuid }, // Updated values for isactive and id
+                    { where: { userid: user.id } } // Condition for the update
+                )
+                    .then((result) => {
+                        // After the update, you can proceed with sending the email
+                        console.log("AFTER UPDATE");
+                        const url = uuid
+                        const mailOptions = {
+                            //manam dhentho aithe authorize ayithamo adhay send chesthundhi
+                            from: "shaikrahul731@gmail.com",
+                            to: req.body.email,
+                            subject: 'MAY BE',
+                            text: 'to update the password just clock on the link'
+                                + `http://localhost:1864/resetpassword/${url}`,
+                        };
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log("error");
+                            } else {
+                                console.log('Email sent: ');
+                            }
+                        });
+                        console.log(result); // Result will contain the number of rows affected
+                    })
+                    .catch(err => {
+                        console.log("Error:", err); // Log any errors that occur during the update
+                    });
+            } else {
+                Forget.create({
+                    id: uuid,
+                    userid: user.id,
+                    isactive: false, // Assuming 'isactive' is a boolean field
+                }).then((result) => {
+                    const url = uuid
+                    console.log(result);
+                    const mailOptions = {
+                        //manam dhentho aithe authorize ayithamo adhay send chesthundhi
+                        from: "shaikrahul731@gmail.com",
+                        to: req.body.email,
+                        subject: 'UPDATE THE PASSWORD',
+                        html: `To update the password, just click on the following link: <a href="http://localhost:1864/resetpassword/?url=${url}">http://localhost:1864/resetpassword/?url=${url}</a>`
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log("error");
+                        } else {
+                            console.log('Email sent: ');
+                        }
+                    });
+                    // Add email sending logic here
+                }).catch(err => {
+                    console.log("Error:", err);
+                });
+            }
+
+        }
+    })
+    res.redirect('/login')
 }
 
 
-exports.resetpassword = (req, res, next) => {
-    console.log(req.body.email);
-    const sender = {
-        email: 'shaikrahul1105@gmail.com',
-        name: 'RAHUL'
-    };
 
-    const receiver = {
-        email: req.body.email
-    };
 
-    // Create the email request
-    const sendTransacEmail = new Sib.SendSmtpEmail();
-    sendTransacEmail.sender = sender;
-    sendTransacEmail.to = [receiver];
-    sendTransacEmail.subject = 'Password Reset Link';
-    sendTransacEmail.textContent = 'PASSWORD MARCHIPOYEDHI YENDHI RA PUMKA';
+exports.getupdatepassword = (req, res, next) => {
+    const params = req.query.url
+    console.log(params);
+    const viewdata = {
+        params
+    }
+    res.render('../views/login/update', viewdata)
+}
 
-    // Send the transactional email
-    tranEmailApi.sendTransacEmail(sendTransacEmail)
-        .then((response) => {
-            console.log("Email sent successfully:", response);
-            res.status(200).json({ message: "Email sent successfully" });
+
+exports.postupdatepassword = (req, res, next) => {
+    const update = req.body.update
+    const params = req.body.params
+    console.log(update);
+    console.log(params);
+    Forget.update({ isactive: true }, { where: { id: params } })
+        .then((result) => {
+            console.log(result);
+        }).catch(err => {
+            console.log(err);
         })
-        .catch((error) => {
-            console.error("Error sending email:");
+    Forget.findOne({ where: { id: params } })
+        .then(result => {
+            bcrypt.hash(update, 10, (err, hash) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Error occurred while hashing the password");
+                }
+                SignUp.update({ password:hash },{where:{id:result.userid}})
+                .then(()=>{
+                    console.log("succesfully updated");
+                }).catch(err=>{
+                    console.log("FUCKING OUT MAN");
+                })
+            })
+        }).catch(err=>{
+            console.log("COME AND SEE IN THE FORGOT FIND ONE");
+        })
+    res.redirect('/login')
+}
 
-        });
-};
+
+
+
+
+
+
+
+
+
+//         bcrypt.compare(update.oldPassword, result[0].password).then((response)=> {
+//             if(!response) {
+//                 req.flash('error','Old Password is incorrect!');
+//                 return res.redirect('/forgot-password?url='+params);
+//             }else{
+//                 bcrypt.genSalt(10,(err,salt)=>{
+//                     bcrypt.hash(update.newPassword, salt, (err, hash) => {
+//                         User.update({password:hash},{where:{id:result[0].userId}}).then(()=>{
+//                             req.flash('success','Your password has been updated successfully! Please login with your
+//                             req.flash('success','Password has been updated successfully!');
+//                             res.redirect('/login');
+//                         })
+//                     })
+//                 }
+//            }).catch((err)=>{
+//                console.log(err);
+//            })
+//        })
+//        .catch((err)=>{
+//            console.log("Error in updating password");
+//            console.log(err);
+//        });
+// };
+

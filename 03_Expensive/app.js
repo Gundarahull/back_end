@@ -39,12 +39,19 @@ app.use(razorpayroutes)
 const SignUp = require('./model/singup-model');
 const Expensive = require('./model/expense-model');
 const Order = require('./model/order-model');
+const Forget = require('./model/forgot-model');
 SignUp.hasMany(Expensive)
 Expensive.belongsTo(SignUp)
 
 //realation between user-orders
 Order.belongsTo(SignUp)
 SignUp.hasMany(Order)
+
+
+SignUp.hasMany(Forget)
+Forget.belongsTo(SignUp)
+
+
 
 sequelize.authenticate().then(()=>{
     console.log("CONNECTION DONE");
