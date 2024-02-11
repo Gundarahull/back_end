@@ -79,34 +79,38 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    // Function to download data as CSV file
-    function downloadCSV(filename, data) {
-      const csv = 'Date,Type,Amount\n' + data.map(row => row.join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, filename);
-      } else {
-        const link = document.createElement('a');
-        if (link.download !== undefined) {
-          const url = URL.createObjectURL(blob);
-          link.setAttribute('href', url);
-          link.setAttribute('download', filename);
-          link.style.visibility = 'hidden';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+    // Function to download data as text file
+    function downloadText(filename, data) {
+        const blob = new Blob([data], { type: 'text/plain;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
-      }
     }
 
     // Function to handle click event on the download button
     document.getElementById('downloadButton').addEventListener('click', function() {
-      // Extract data from the table and format it as an array of arrays
-      const tableRows = document.querySelectorAll('table.table-striped tbody tr');
-      const data = Array.from(tableRows).map(row => Array.from(row.children).map(cell => cell.textContent));
-      // Trigger download with the filename 'expense_income_data.csv'
-      downloadCSV('expense_income_data.csv', data);
+        // Extract data from the table and format it as text
+        const tableRows = document.querySelectorAll('table.table-striped tbody tr');
+        let data = 'Date,Type,Amount\n';
+        tableRows.forEach(row => {
+            const rowData = Array.from(row.children).map(cell => cell.textContent).join(',');
+            data += rowData + '\n';
+        });
+        // Trigger download with the filename 'expense_income_data.txt'
+        downloadText('expense_income_data.txt', data);
     });
-  </script>
+</script>
+
 </body>
 </html>

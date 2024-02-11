@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,16 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header class="bg-primary py-3">
         <div class="container text-center">
             <h1 class="text-light">EXPENSE TRACKER</h1>
         </div>
     </header>
+    <nav>
+        <a href="/basis" id="downloadExpenses" class="btn btn-success btn-smfloat-right mt-3">Download Expenses</a>
+    </nav>
     <div class="container my-4">
         <div class="row">
             <div class="col-md-6 mx-auto">
@@ -64,5 +69,27 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+    <!-- <script>
+        document.getElementById('downloadExpenses').addEventListener('click', async function () {
+            try {
+                const response = await axios.get('/basis');
+                const data = response.data;
+                const blob = new Blob([data], { type: 'text/plain;charset=utf-8;' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'expenses_data.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (error) {
+                console.error('Error downloading expenses:', error);
+            }
+        });
+    </script> -->
+
 </body>
+
 </html>
