@@ -27,4 +27,9 @@ exports.authenticate = (req, res, next) => {
     }).catch(()=>{res.status(401).send({message: 'You are not authorized to perform this action'})});
 }
 
+exports.setlimit= (req, res, next) => { 
+    const limit=req.body.set
+    next();
+}
+
 

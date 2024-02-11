@@ -1,5 +1,5 @@
 const express=require('express')
-const { postexpense, getpostexpense, deleteexpense } = require('../controllers/expensive-controller')
+const { postexpense, getpostexpense, deleteexpense, setlimit } = require('../controllers/expensive-controller')
 const { authenticate } = require('../middleware/middleware')
 const { leaderboard, getbasis } = require('../controllers/leaderboard-controller')
 const router=express.Router()
@@ -13,5 +13,8 @@ router.post('/expense/delete',authenticate,deleteexpense)
 router.get('/board',leaderboard)
 //basis expense
 router.get('/basis',authenticate,getbasis)
+
+// router.post('/set',setlimit)
+
 
 module.exports=router

@@ -63,7 +63,7 @@ sequelize.authenticate().then(()=>{
 
 
 sequelize.sync()
-.then((result)=>{
+.then(() => {
     console.log("CREATED TABLE");
 }).catch(err=>{
     console.log(err);
