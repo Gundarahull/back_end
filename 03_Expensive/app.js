@@ -8,6 +8,8 @@ const session = require('express-session');
 //for encrypt the passwords so Cool
 const bcrypt = require('bcrypt');
 
+const paginate=require('express-paginate')
+app.use(paginate.middleware(3,100));
 //cookies
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
