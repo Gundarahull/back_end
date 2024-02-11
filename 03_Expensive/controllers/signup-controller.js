@@ -364,31 +364,14 @@ exports.postupdatepassword = (req, res, next) => {
 
 
 
+//expiry for the email after sometime.....
+// const expirationTimeInMinutes = 1; // Adjust the expiration time as needed (e.g., 60 minutes)
 
+// // Calculate expiration time
+// const now = new Date();
+// const expirationTime = new Date(now.getTime() + expirationTimeInMinutes * 60000); // Convert minutes to milliseconds
 
+// // Generate URL with expiration timestamp
+// const url = `http://localhost:1864/resetpassword/${url}?expires=${expirationTime.getTime()}`;
 
-
-//         bcrypt.compare(update.oldPassword, result[0].password).then((response)=> {
-//             if(!response) {
-//                 req.flash('error','Old Password is incorrect!');
-//                 return res.redirect('/forgot-password?url='+params);
-//             }else{
-//                 bcrypt.genSalt(10,(err,salt)=>{
-//                     bcrypt.hash(update.newPassword, salt, (err, hash) => {
-//                         User.update({password:hash},{where:{id:result[0].userId}}).then(()=>{
-//                             req.flash('success','Your password has been updated successfully! Please login with your
-//                             req.flash('success','Password has been updated successfully!');
-//                             res.redirect('/login');
-//                         })
-//                     })
-//                 }
-//            }).catch((err)=>{
-//                console.log(err);
-//            })
-//        })
-//        .catch((err)=>{
-//            console.log("Error in updating password");
-//            console.log(err);
-//        });
-// };
 
