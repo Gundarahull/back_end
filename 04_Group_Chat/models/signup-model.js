@@ -13,7 +13,6 @@ const Signup=sequelize.define('signup',{
     },
     phonenumber:{
         type:DataTypes.BIGINT,
-        unique:true,
         allowNull:false  
     },
     password:{
@@ -22,7 +21,6 @@ const Signup=sequelize.define('signup',{
     },
     email:{
         type:DataTypes.STRING,
-        unique:true,
         validate:{isEmail: true}
     },
 

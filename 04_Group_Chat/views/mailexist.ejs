@@ -69,7 +69,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Sign Up to GROUP CHAT</h2>
+        <h2>Already MAIL EXIST-MAN</h2>
         <form action="/signup" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -90,22 +90,5 @@
             <button type="submit">Sign Up</button>
         </form>
     </div>
-    <script>
-    
-        const urlParams = new URLSearchParams(window.location.search);
-        const success = urlParams.get('success');
-
-        // If the 'success' parameter is present and true, display an alert
-        if (success === 'true') {
-            // Show a Bootstrap alert
-            alert("Signup SUCCESSFully DONE")
-            const alertDiv = document.createElement('div');
-            alertDiv.classList.add('alert', 'alert-success');
-            alertDiv.textContent = 'Signup successful!';
-            
-            // Add the alert to the top of the container
-            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('h2'));
-        }
-    </script>
 </body>
 </html>
