@@ -78,8 +78,9 @@ exports.postlogin = (req, res, next) => {
                             maxAge: 24 * 60 * 60 * 1000,
                             httpOnly: true
                         });
+                        
                         console.log("sucessgull in login");
-
+                        res.redirect('/chat')
                         // const data = Signup.findOne({ where: { ispremium: true, id: user.id } })
                         // if (!data) {
                         //     res.redirect('/expensive');

@@ -83,6 +83,10 @@
     </style>
 </head>
 <body>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+    </div>
     <div id="chat-container">
         <div class="message me">
             <div class="content">Hello, how are you?</div>
@@ -93,10 +97,11 @@
         <!-- Add more messages as needed -->
     </div>
     <form id="message-form">
+        
         <input type="text" id="message-input" placeholder="Type your message...">
         <button type="submit" id="send-button">Send</button>
     </form>
-    <script>
+    <!-- <script>
         // script.js
         document.getElementById('message-form').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -116,6 +121,6 @@
                 // You might want to implement sending the message to the server here
             }
         });
-    </script>
+    </script> -->
 </body>
 </html>
