@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* styles.css */
+        body {
+            background-color: #128C7E;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-y: auto;
+            height: 80vh;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.me .content {
+            background-color: #dcf8c6;
+            float: right;
+        }
+
+        .message.other .content {
+            background-color: #fff;
+            float: left;
+        }
+
+        #message-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ccc;
+            display: flex; /* Use flexbox */
+            align-items: center; /* Center items vertically */
+        }
+
+        #message-input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        #send-button {
+            width: 20%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px; /* Add margin between input and button */
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div class="message me">
+            <div class="content">Hello, how are you?</div>
+        </div>
+        <div class="message other">
+            <div class="content">Hi! I'm doing well, thanks for asking.</div>
+        </div>
+        <!-- Add more messages as needed -->
+    </div>
+    <form id="message-form">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button type="submit" id="send-button">Send</button>
+    </form>
+    <script>
+        // script.js
+        document.getElementById('message-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('message-input');
+            const value = input.value.trim();
+
+            if (value) {
+                const messageContainer = document.getElementById('chat-container');
+                const message = document.createElement('div');
+                message.classList.add('message', 'me');
+                message.innerHTML = `
+                    <div class="content">${value}</div>
+                `;
+                messageContainer.appendChild(message);
+                input.value = '';
+
+                // You might want to implement sending the message to the server here
+            }
+        });
+    </script>
+</body>
+</html>
