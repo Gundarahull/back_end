@@ -8,7 +8,7 @@
     <style>
         /* styles.css */
         body {
-            background-color: #128C7E;
+            background-color: #e5ddd5; /* WhatsApp background color */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -39,7 +39,7 @@
         }
 
         .message.me .content {
-            background-color: #dcf8c6;
+            background-color: #dcf8c6; /* WhatsApp green */
             float: right;
         }
 
@@ -47,21 +47,61 @@
             background-color: #fff;
             float: left;
         }
+
+        /* WhatsApp-style form */
+        #message-form {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f4f5f8; /* WhatsApp chat input background color */
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        #username-input,
+        #message-input {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 20px;
+            flex: 1;
+        }
+
+        #send-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 20px;
+            background-color: #128c7e; /* WhatsApp send button color */
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-button:hover {
+            background-color: #075e54; /* WhatsApp send button hover color */
+        }
     </style>
 </head>
 <body>
     <div id="chat-container">
-        
+        <% if (chats.length === 0) { %>
             <div class="message">
                 <div class="content">No chats</div>
             </div>
-       
-          
-                <div class="message">
+        <% } else { %>
+            <% for (let chat of chats) { %>
+                <div class="message <%= chat.isMe ? 'me' : 'other' %>">
+                    <div class="username"><%= chat.username %>:</div>
+                    <div class="content"><%= chat.message %><br>
+                        <%= chat.createdAt %>
+                    </div>
                    
-                    
                 </div>
-          
+            <% } %>
+        <% } %>
     </div>
     <form id="message-form" action="/chat" method="post">
         <input type="text" id="username-input" name="username" placeholder="Your Username" required>

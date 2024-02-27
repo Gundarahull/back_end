@@ -72,15 +72,16 @@ exports.postlogin = (req, res, next) => {
                     if (result) {
                         console.log("Congratulations");
 
-                        const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '24h' });
+                        let token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '24h' });
 
                         res.cookie('token', token, {
                             maxAge: 24 * 60 * 60 * 1000,
                             httpOnly: true
                         });
-                        
+                        console.log("token<?<><>?<<",token);
+
                         console.log("sucessgull in login");
-                        res.redirect('/chat')
+                        res.render('Message')
                         // const data = Signup.findOne({ where: { ispremium: true, id: user.id } })
                         // if (!data) {
                         //     res.redirect('/expensive');
